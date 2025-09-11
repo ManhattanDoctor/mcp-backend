@@ -17,7 +17,7 @@ export class Codes extends FilterableMapCollection<ICode> {
     //
     //--------------------------------------------------------------------------
 
-    constructor(raw: any) {
+    constructor(raw: Record<string, string>) {
         super('code');
         this.addItems(Object.keys(raw).map(key => ({ code: key, description: _.trim(raw[key]) })));
 

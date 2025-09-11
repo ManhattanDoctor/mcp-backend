@@ -1,0 +1,28 @@
+name: TNVED-CODE - DEPLOY
+on: [workflow_dispatch]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Stop and remove docker container
+              continue-on-error: true
+              uses: appleboy/ssh-action@v0.1.2
+              with:
+                  key: ${{secrets.SSH_KEY}}
+                  host: ${{secrets.SSH_HOST}}
+                  username: ${{secrets.SSH_USERNAME}}
+                  script: |
+                      docker stop tnved-code
+                      docker rm tnved-code
+
+            - name: Update docker image and run container
+              uses: appleboy/ssh-action@v0.1.2
+              with:
+                  key: ${{secrets.SSH_KEY}}
+                  host: ${{secrets.SSH_HOST}}
+                  username: ${{secrets.SSH_USERNAME}}
+                  script: |
+                      docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+                      docker pull ghcr.io/manhattandoctor/mcp-backend/tnved-code:latest          
+                      docker run -t -i -d -p 31000:31000 -e WEB_PORT=31000 --name tnved-code ghcr.io/manhattandoctor/mcp-backend/tnved-code:latest

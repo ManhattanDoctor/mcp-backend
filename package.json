@@ -1,0 +1,14 @@
+{
+    "name": "@mcp/backend",
+    "version": "1.0.0",
+    "license": "MIT",
+    "author": "Renat Gubaev",
+    "dependencies": {
+        "@nestjs/platform-express": "^11.1.6",
+        "@project/module": "file:./src/packages/module",
+        "@rekog/mcp-nest": "^1.8.0",
+        "@ts-core/backend": "~3.0.33",
+        "@ts-core/backend-nestjs": "~11.0.1"
+    },
+    "devDependencies": {}
+}

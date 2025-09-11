@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 
 interface ICodeSearchDto {
     query: string;
+    maximum?: number;
 }
 interface ICodeSearchDtoResponse {
     items: Array<ICodeSearchResult>;
@@ -35,6 +36,7 @@ const ICodeSearchResultSchema = z.object({
 })
 const ICodeSearchDtoSchema = z.object({
     query: z.string().describe('Запрос для поиска кода'),
+    maximum: z.number().describe('Максимальное количество результатов поиска').optional(),
 })
 const ICodeSearchDtoResponseSchema = z.object({
     items: z.array(ICodeSearchResultSchema).describe('Результат поиска кодов классификации товара'),
@@ -89,8 +91,8 @@ export class CodeTool extends LoggerWrapper {
         outputSchema: ICodeSearchDtoResponseSchema
     })
     public async search(item: ICodeSearchDto): Promise<ICodeSearchDtoResponse> {
-        let { query } = item;
-        let items = this.items.search(query);
+        let { query, maximum } = item;
+        let items = this.items.search(query, maximum);
         if (_.isEmpty(items)) {
             throw new ExtendedError(`Не удалось найти никаких таможенных кодов по запросу "${query}", попробуйте изменить запрос и поискать по схожим словам.`);
         }

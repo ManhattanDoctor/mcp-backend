@@ -23,7 +23,6 @@ export class Codes extends FilterableMapCollection<ICode> {
 
         this.mini = new MiniSearch({ idField: 'code', fields: ['code', 'description'], searchOptions: { boost: { code: 2 }, fuzzy: 0.2 } });
         this.mini.addAll(this.collection);
-        console.log(this.collection.length);
     }
 
     //--------------------------------------------------------------------------
@@ -32,7 +31,10 @@ export class Codes extends FilterableMapCollection<ICode> {
     //
     //--------------------------------------------------------------------------
 
-    public search(query: string, maximum: number = 50): Array<ICodeSearchResult> {
+    public search(query: string, maximum?: number): Array<ICodeSearchResult> {
+        if (_.isNil(maximum)) {
+            maximum = 50;
+        }
         return this.mini.search(query).slice(0, maximum).map(item => { return { score: item.score, item: this.get(item.id), } });
     }
 }

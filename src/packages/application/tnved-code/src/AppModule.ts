@@ -31,8 +31,9 @@ export class AppModule extends ModeApplication implements OnApplicationBootstrap
                 },
                 {
                     provide: Codes,
+                    inject: [Logger],
                     // useFactory: async () => new Codes(await FileUtil.jsonRead(`${`${process.cwd()}/data`}/code.json`))
-                    useFactory: async () => new Codes(DATA)
+                    useFactory: async (logger) => new Codes(logger, DATA)
                 },
                 CodeTool
             ]

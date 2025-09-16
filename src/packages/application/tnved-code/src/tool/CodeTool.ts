@@ -85,18 +85,18 @@ export class CodeTool extends LoggerWrapper {
 
     @Tool({
         name: 'customs_codes_search',
-        description: 'Поиск таможенных кодов с описанием по схожим словам указанного запроса.',
+        description: 'Поиск таможенных кодов по указанному запросу.',
         annotations: { readOnlyHint: true, idempotentHint: true },
         parameters: ICodeSearchDtoSchema,
         outputSchema: ICodeSearchDtoResponseSchema
     })
     public async search(item: ICodeSearchDto): Promise<ICodeSearchDtoResponse> {
         let { query, maximum } = item;
-        let items = this.items.search(query, maximum);
+        let items = await this.items.search(query, maximum);
         if (_.isEmpty(items)) {
-            throw new ExtendedError(`Не удалось найти никаких таможенных кодов по запросу "${query}", попробуйте изменить запрос и поискать по схожим словам.`);
+            throw new ExtendedError(`Не удалось найти никаких таможенных кодов по запросу "${query}", попробуйте изменить запрос или поискать по схожим словам.`);
         }
-        this.logger.log(`Запрос "${query}", нашел "${items.length}" кодов`);
+        this.logger.log(`Поиск по запросу "${query}", нашел "${items.length}" кодов`);
         return { items };
     }
 }

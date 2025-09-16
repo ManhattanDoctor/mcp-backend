@@ -21,5 +21,7 @@ export class InitializeService extends LoggerWrapper {
     //
     // --------------------------------------------------------------------------
 
-    public async initialize(): Promise<void> { }
+    public async initialize(): Promise<void> {
+        // console.log(await this.codes.search('Корова'));
+    }
 }

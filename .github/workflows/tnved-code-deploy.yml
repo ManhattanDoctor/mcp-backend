@@ -25,4 +25,4 @@ jobs:
                   script: |
                       docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
                       docker pull ghcr.io/manhattandoctor/mcp-backend/tnved-code:latest          
-                      docker run -t -i -d -p 31000:31000 -e WEB_PORT=31000 --name tnved-code ghcr.io/manhattandoctor/mcp-backend/tnved-code:latest
+                      docker run -t -i -d -p 31000:31000 -e WEB_PORT=31000 -e LOGGER_LEVEL=3 --name tnved-code ghcr.io/manhattandoctor/mcp-backend/tnved-code:latest

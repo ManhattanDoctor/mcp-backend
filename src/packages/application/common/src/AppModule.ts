@@ -3,10 +3,9 @@ import { ModeApplication } from '@ts-core/backend';
 import { AppSettings } from './AppSettings';
 import { Logger } from '@ts-core/common';
 import { LoggerModule, TransportModule, TransportType } from '@ts-core/backend-nestjs';
-import { Codes, InitializeService } from './service';
-import { CodeTool } from './tool';
+import { InitializeService } from './service';
 import { McpModule } from '@rekog/mcp-nest';
-import { DATA } from './Data';
+import { CurrentDateTool } from './tool';
 
 export class AppModule extends ModeApplication implements OnApplicationBootstrap {
     // --------------------------------------------------------------------------
@@ -21,7 +20,7 @@ export class AppModule extends ModeApplication implements OnApplicationBootstrap
             imports: [
                 LoggerModule.forRoot(settings),
                 TransportModule.forRoot({ type: TransportType.LOCAL }),
-                McpModule.forRoot({ name: 'customs-codes', version: '1.0.0' })
+                McpModule.forRoot({ name: 'common', version: '1.0.0' })
             ],
             providers: [
                 InitializeService,
@@ -29,12 +28,7 @@ export class AppModule extends ModeApplication implements OnApplicationBootstrap
                     provide: AppSettings,
                     useValue: settings
                 },
-                {
-                    provide: Codes,
-                    inject: [Logger],
-                    useFactory: async (logger) => new Codes(logger, DATA)
-                },
-                CodeTool
+                CurrentDateTool
             ]
         }
     }
@@ -46,7 +40,7 @@ export class AppModule extends ModeApplication implements OnApplicationBootstrap
     // --------------------------------------------------------------------------
 
     public constructor(@Inject(Logger) logger: Logger, settings: AppSettings, private service: InitializeService) {
-        super('TNVED', settings, logger);
+        super('COMMON', settings, logger);
     }
 
     // --------------------------------------------------------------------------
